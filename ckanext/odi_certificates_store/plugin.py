@@ -16,10 +16,12 @@ class Odi_Certificates_StorePlugin(plugins.SingletonPlugin):
     # IRoutes
 
     def before_map(self, map):
-        odi_certificate_controller = 'ckanext.odi_certificates_store.controllers.odi_certificate:OdiCertificateController'
+        odi_certificate_controller = 'ckanext.odi_certificates_store.controllers.odi_certificates_store:OdiCertificatesStoreController'
         map.connect('odi_certificate_level_update', '/odi_certificate_level_update',
                     controller=odi_certificate_controller,
-                    action='odi_certificate_level_update')
+                    action='odi_certificate_level_update',
+                    conditions=dict(method=['POST']))
         map.connect('odi_certificate_update', '/odi_certificate_update', controller=odi_certificate_controller,
-                    action='odi_certificate_update')
+                    action='odi_certificate_update',
+                    conditions=dict(method=['POST']))
         return map
