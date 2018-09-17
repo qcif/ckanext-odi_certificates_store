@@ -5,7 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/ckanext/odi_certificates_store/controllers" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ckanext/odi_certificates_store/logic" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Remote Python 2.7.9 (sftp://vagrant@127.0.0.1:2222/home/vagrant/.pyenv/shims/python)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">

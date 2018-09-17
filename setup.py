@@ -86,7 +86,7 @@ setup(
         ckan = ckan.lib.extract:extract_ckan
         
         [paste.paster_command]
-        report = ckanext.odi_certificates_client.command:OdiCertificatesCommand
+        odi-certificate = ckanext.odi_certificates_store.command:OdiCertificatesCommand
     ''',
 
     # If you are changing from the default layout of your extension, you may

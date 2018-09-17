@@ -1,27 +1,22 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
+import ckanext.odi_certificates_store.logic.action.update as action_update
+
 
 class Odi_Certificates_StorePlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
-    plugins.implements(plugins.IRoutes, inherit=True)
+    plugins.implements(plugins.IActions, inherit=True)
 
     # IConfigurer
-
     def update_config(self, config_):
         toolkit.add_template_directory(config_, 'templates')
         toolkit.add_public_directory(config_, 'public')
         toolkit.add_resource('fanstatic', 'odi_certificates_store')
 
-    # IRoutes
-
-    def before_map(self, map):
-        odi_certificate_controller = 'ckanext.odi_certificates_store.controllers.odi_certificates_store:OdiCertificatesStoreController'
-        map.connect('odi_certificate_level_update', '/odi_certificate_level_update',
-                    controller=odi_certificate_controller,
-                    action='odi_certificate_level_update',
-                    conditions=dict(method=['POST']))
-        map.connect('odi_certificate_update', '/odi_certificate_update', controller=odi_certificate_controller,
-                    action='odi_certificate_update',
-                    conditions=dict(method=['POST']))
-        return map
+    # IActions
+    def get_actions(self):
+        return {'odi_certificate_level_update': action_update.odi_certificate_level_update,
+                'odi_certificate_update_extras': action_update.odi_certificate_update_extras,
+                'level_update': action_update.level_update
+                }
