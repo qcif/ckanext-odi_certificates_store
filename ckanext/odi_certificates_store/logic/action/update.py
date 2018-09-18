@@ -32,7 +32,7 @@ def level_update(context=None, data_dict=None):
     odi_certificate = validate_odi_certificate_level(data_dict)
     id = data_dict['id']
     package_data_dict = t.get_action('package_show')(context, {'id': id})
-    merge_package_extras(package_data_dict, {'level': odi_certificate['level']})
+    merge_package_extras(package_data_dict, {'odi_certificate_level': odi_certificate['level']})
     return _update_package(context, package_data_dict)
 
 
