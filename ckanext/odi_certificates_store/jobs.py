@@ -1,4 +1,3 @@
-import json
 from logging import getLogger
 
 import ckan.lib.jobs as jobs
@@ -20,7 +19,7 @@ class Certificates_Importer(object):
 
     def odi_certificate_level_import_all(self):
         response = t.get_action('odi_certificates_get_all')
-        self.log.debug('import all response is %r' % response)
+        self.log.debug('Import all response is %r', response)
         for certificate in response.text.certificates:
             location = certificate.uri
             if not location:
@@ -40,15 +39,19 @@ class Certificates_Importer(object):
         except ValueError, e:
             self.log.error(e)
 
+
 def odi_certificate_level_import(id):
     log = getLogger(__name__)
     context = ckan_context()
     response = t.get_action('odi_certificate_get_from_id')(context, {'id': id})
     log.debug('import response is %r', response)
-    data_dict = response
-    data_dict['id'] = id
-    update_response = t.get_action('level_update')(context, data_dict=data_dict)
-    log.debug('update response is %r' % update_response)
+    if response.status_code == 200:
+        data_dict = response.json()
+        data_dict['id'] = id
+        update_response = t.get_action('level_update')(context, data_dict=data_dict)
+        log.info('Import response is %r' % update_response)
+    else:
+        log.info("Import failed for %s. Reason: %r", id, response)
 
 
 def ckan_context():

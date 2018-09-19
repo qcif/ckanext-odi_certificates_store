@@ -1,0 +1,2 @@
+requests>=2.3.0
+-e git://github.com/qcif/ckanext-odi_certificates_store.git#egg=ckanext_odi_certificates_store
