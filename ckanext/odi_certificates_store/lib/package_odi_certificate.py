@@ -6,13 +6,14 @@ import ckan.plugins.toolkit as t
 log = getLogger(__name__)
 
 
-def merge_odi_certificate_with_package_extras(data_dict, odi_certificate_data_dict):
+def merge_odi_certificate_dict_into_package_extras(data_dict, odi_certificate_data_dict):
     extras = dictize_extras(data_dict)
     extras['odi_certificate'] = extras.get('odi_certificate', {})
-    extras['odi_certificate'].update(odi_certificate_data_dict.get('odi_certificate', {}))
+    extras['odi_certificate'].update(odi_certificate_data_dict)
     extras_undict = undictize_extras(extras)
     data_dict['extras'] = extras_undict
     return data_dict
+
 
 def merge_package_extras(data_dict, incoming_extras):
     extras = dictize_extras(data_dict)
@@ -57,15 +58,18 @@ def validate(data_dict):
 
 
 def validate_odi_certificate(data_dict):
-    if not data_dict.get('odi_certificate', '') and data_dict.get('certificate', ''):
-        data_dict['odi_certificate'] = data_dict.pop('certificate')
-    if not data_dict.get('odi_certificate', ''):
-        t.abort(400, t._('Data attribute, "odi_certificate", must be present.'))
+    log.debug('validating data dict: %r', data_dict)
+    # ensure validation is lenient
+    valid_keys = ['level', 'uri', 'badges']
+    if not any(k in data_dict for k in set(valid_keys)):
+        message = 'Certificate data must contain at least 1 of: '.join(valid_keys)
+        t.abort(400, t._(message))
 
 
-def validate_odi_certificate_level(data_dict):
-    log.debug('incoming data dict for level validation: %r', data_dict)
-    odi_certificate = data_dict.get('certificate', {})
+# def validate_odi_certificate_level(data_dict):
+def validate_odi_certificate_level(odi_certificate):
+    log.debug('incoming data dict for level validation: %r', odi_certificate)
+    # odi_certificate = data_dict.get('certificate', {})
     if not odi_certificate.get('level', ''):
         t.abort(400, t._(
             'Data attribute, "certificate", and "certificate" attribute, "level", must both be present.'))

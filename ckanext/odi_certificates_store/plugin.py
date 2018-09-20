@@ -16,7 +16,6 @@ class Odi_Certificates_StorePlugin(plugins.SingletonPlugin):
 
     # IActions
     def get_actions(self):
-        return {'odi_certificate_level_update': action_update.odi_certificate_level_update,
-                'odi_certificate_update_extras': action_update.odi_certificate_update_extras,
-                'level_update': action_update.level_update
+        return {'odi_certificate_as_extra_update': action_update.odi_certificate_as_extra_update,
+                'odi_certificate_level_as_extra_update': action_update.odi_certificate_level_as_extra_update
                 }
