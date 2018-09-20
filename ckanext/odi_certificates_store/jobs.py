@@ -130,8 +130,6 @@ def _is_dataset_id_valid_for_location(dataset_id, location):
 def _location(certificate):
     g_log.debug('checking location(uri) in certificate: %r', certificate)
     location = t.get_or_bust(certificate, 'uri')
-    # development docker debug only TODO: remove before git commit
-    location = location.replace("10.0.2.2", "localhost")
     return location + '.json'
 
 
