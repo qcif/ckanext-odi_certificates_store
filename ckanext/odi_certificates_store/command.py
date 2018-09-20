@@ -44,18 +44,20 @@ class OdiCertificatesCommand(p.toolkit.CkanCommand):
         self.log = logging.getLogger("ckan.lib.cli")
 
         cmd = self.args[0]
-        importer = Certificates_Importer()
-        if cmd == 'import':
-            if len(self.args) == 2:
-                self.log.debug('args are: %s', self.args)
-                data_ids = [s.strip() for s in self.args[1].split(' ')]
-                self.log.info("Running odi certificate import => %s", data_ids)
-                importer.odi_certificates_multiple_jobs(data_ids, odi_certificate_level_import)
+        try:
+            importer = Certificates_Importer.instance()
+            if cmd == 'import':
+                if len(self.args) == 2:
+                    data_ids = [s.strip() for s in self.args[1].split(' ')]
+                    self.log.info("Running odi certificate import => %s", data_ids)
+                    importer.odi_certificates_multiple_jobs(data_ids, odi_certificate_level_import)
+                else:
+                    self.parser.error('"import" needs at at least dataset ID')
+            elif cmd == 'importall':
+                self.log.info("Running odi certificate import all")
+                importer.odi_certificates_all_jobs(odi_certificate_level_update)
             else:
-                self.parser.error('"import" needs at at least dataset ID')
-        elif cmd == 'importall':
-            self.log.info("Running odi certificate import all")
-            importer.odi_certificates_all_jobs(odi_certificate_level_update)
-        else:
-            self.parser.error('Command not recognized: %r' % cmd)
-        self.log.info("Completed")
+                self.parser.error('Command not recognized: %r' % cmd)
+        except ValueError, e:
+            self.log.error(e)
+        self.log.info("Command runner completed.")

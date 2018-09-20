@@ -1,1 +1,2 @@
 requests>=2.3.0
+ckanext-odi_certificates_client>=1.0.0
